@@ -1,0 +1,48 @@
+[
+  {
+    "mail": "salmor@mail.ru",
+    "currentBooks": [
+      "3"
+    ],
+    "issuedBooks": [
+      "1",
+      "3"
+    ],
+    "employeeName": "Салмоор",
+    "password": "salmor"
+  },
+  {
+    "mail": "isma@gmail.com",
+    "currentBooks": [
+      "1"
+    ],
+    "issuedBooks": [
+      "2",
+      "3"
+    ],
+    "employeeName": "Ислам",
+    "password": "islam"
+  },
+  {
+    "mail": "ahmet77@mail.ru",
+    "currentBooks": [
+      "2"
+    ],
+    "issuedBooks": [
+      "1",
+      "2"
+    ],
+    "employeeName": "Ахмет",
+    "password": "ahmet"
+  },
+  {
+    "mail": "salmor22@MA",
+    "currentBooks": [],
+    "issuedBooks": [
+      "3",
+      "2"
+    ],
+    "employeeName": "salmor",
+    "password": "salmor"
+  }
+]

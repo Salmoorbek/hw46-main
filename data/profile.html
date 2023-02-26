@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>Email: ${employee.mail}</p>
+    <p>Имя: ${employee.employeeName}</p>
+    <p>Читает: <#if employee.currentBooks?? && (employee.currentBooks?size > 0)>
+        <#list employee.currentBooks as currentBook>
+        <#list books as book>
+        <#if currentBook == book.id>
+        ${currentBook?counter}. ${book.name}
+    </#if>
+</#list>
+</#list>
+<#else>
+не читает
+</#if>
+</p>
+<p>Прочел и вернул: <#if employee.issuedBooks?? && (employee.issuedBooks?size > 0)>
+    <#list employee.issuedBooks as issuedBook>
+    <#list books as book>
+    <#if issuedBook == book.id>
+    ${issuedBook?counter}. ${book.name}
+</#if>
+</#list>
+</#list>
+<#else>
+пока ничего не отдал
+</#if></p>
+
+</body>
+</html>
