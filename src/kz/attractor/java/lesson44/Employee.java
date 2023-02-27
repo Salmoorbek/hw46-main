@@ -1,6 +1,12 @@
 package kz.attractor.java.lesson44;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Employee {
     private String mail;
@@ -8,6 +14,7 @@ public class Employee {
     private List<String> issuedBooks;
     private String employeeName;
     private String password;
+    private String identify;
 
 
     public Employee(String mail, List<String> currentBooks, List<String> issuedBooks, String employeeName, String password) {
@@ -19,7 +26,11 @@ public class Employee {
     }
 
     public Employee(String mail, String employeeName, String password) {
-        this(mail, null, null, employeeName, password);
+        this.mail = mail;
+        this.currentBooks = new ArrayList<>();
+        this.issuedBooks = new ArrayList<>();
+        this.employeeName = employeeName;
+        this.password = password;
     }
     public Employee(){
         this(null, null, null, null,null);
@@ -64,5 +75,28 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getIdentify() {
+        return identify;
+    }
+
+    public void setIdentify(String identify) {
+        this.identify = identify;
+    }
+    public void makeIdentify() {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            setIdentify(convertToString(md.digest(employeeName.getBytes())));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+    private String convertToString(byte[] array) {
+        return IntStream.range(0, array.length / 4)
+                .map(i -> array[i])
+                .map(i -> (i < 0) ? i + 127 : i)
+                .mapToObj(Integer::toHexString)
+                .collect(Collectors.joining());
     }
 }

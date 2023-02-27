@@ -13,8 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Lesson44Server extends BasicServer {
     private final static Configuration freemarker = initFreeMarker();
@@ -22,9 +20,7 @@ public class Lesson44Server extends BasicServer {
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
-        registerGet("/books", this::booksHandler);
-        registerGet("/books/1", this::bookHandler);
-        registerGet("/employee", this::employeeHandler);
+
     }
 
     private static Configuration initFreeMarker() {
@@ -89,22 +85,4 @@ public class Lesson44Server extends BasicServer {
         return new SampleDataModel();
     }
 
-    private void booksHandler(HttpExchange exchange) {
-        renderTemplate(exchange, "books.html", new BookModel());
-    }
-
-    private void bookHandler(HttpExchange exchange) {
-        Map<String,Object> data = new HashMap<>();
-        data.put("book", getBooksModel().getBook());
-        renderTemplate(exchange, "book.html", data);
-    }
-    public BookModel getBooksModel(){
-        return new BookModel();
-    }
-    private void employeeHandler(HttpExchange exchange) {
-        Map<String,Object> data = new HashMap<>();
-        data.put("employees", new EmployeeModel().getEmployees());
-        data.put("books", getBooksModel().getBooks());
-        renderTemplate(exchange, "employee.html", data);
-    }
 }

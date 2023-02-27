@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
+import static kz.attractor.java.lesson44.Lesson45Server.getSomeEmployee;
 
 public abstract class BasicServer {
 
@@ -55,6 +56,15 @@ public abstract class BasicServer {
         return "";
     }
 
+    protected static String getCookies(HttpExchange exchange){
+        return exchange.getRequestHeaders()
+                .getOrDefault("Cookie", List.of(""))
+                .get(0);
+    }
+
+    protected void setCookie(HttpExchange exchange, Cookie cookie){
+        exchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
     protected static String getContentType(HttpExchange exchange){
         return exchange.getRequestHeaders()
                 .getOrDefault("Content-Type", List.of(""))
@@ -137,7 +147,7 @@ public abstract class BasicServer {
         }
     }
 
-    private void respond404(HttpExchange exchange) {
+    protected void respond404(HttpExchange exchange) {
         try {
             var data = "404 Not found".getBytes();
             sendByteData(exchange, ResponseCodes.NOT_FOUND, ContentType.TEXT_PLAIN, data);
@@ -159,6 +169,10 @@ public abstract class BasicServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    protected boolean checkCookie(HttpExchange exchange){
+        var parsed = Cookie.parse(getCookies(exchange));
+        return parsed.get("userId") != null && parsed.get("userId").equalsIgnoreCase(getSomeEmployee().getIdentify());
     }
     public final void start() {
         server.start();

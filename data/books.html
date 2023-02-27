@@ -6,35 +6,74 @@
           name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Books</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'><link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/" class="nav-link px-2 link-secondary">Main</a></li>
+                <li><a href="/profile" class="nav-link px-2 link-dark">Profile</a></li>
+                <li><a href="/books" class="nav-link px-2 link-dark">Books</a></li>
+                <li><a href="/employee" class="nav-link px-2 link-dark">Employee</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <#if employee??>
+                ${employee.mail}
+            </#if>
+            <#if !login??>
+            <a href="/login"><button type="button" class="btn btn-success mt-2 px-2">Login</button></a>
+            <a href="/register"><button type="button" class="btn btn-success mt-2 px-2">Sign-up</button></a>
+            <#else>
+            <a href="/logout"><button type="button" class="btn btn-outline-primary me-2">Logout</button></a>
+        </#if>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 <h1>Список книг:</h1>
 <table class="table">
     <thead>
     <tr>
         <th scope="col">#</th>
         <th scope="col">ID</th>
-        <th scope="col">Название</th>
-        <th scope="col">Картинка</th>
-        <th scope="col">Автор</th>
-        <th scope="col">Год выпуска</th>
-        <th scope="col">Жанр</th>
-        <th scope="col">Статус</th>
+        <th scope="col">Name</th>
+        <th scope="col">Book picture</th>
+        <th scope="col">Author</th>
+        <th scope="col">Year</th>
+        <th scope="col">Genre</th>
+        <th scope="col">Status</th>
+        <#if login?? && login>
+        <th scope="col">Take</th>
+        </#if>
+    </tr>
     </thead>
     <tbody>
     <#list books as book>
     <tr>
         <th scope="row">${book?counter}</th>
         <td>${book.id}</td>
-        <td><a href="/books/1">${book.name}</a></td>
+        <td><a href="?id=${book.id}">${book.name}</a></td>
         <td><img src="${book.photo}" alt="logo" style="display:block; width: 50px; height: 50px;"></td>
         <td>${book.author}</td>
         <td>${book.year}</td>
         <td>${book.genre}</td>
-        <td><#if book.issued> выдан сотруднику ${book.employeeId} <#else> в библиотеке </#if></td>
+        <td><#if book.issued> issued to an employee ${book.employeeId} <#else> not issued</#if>
+        <#if login?? && login && !book.issued>
+        <#if employee?? && (employee.currentBooks?size < 2)>
+        <th scope="col"><a href="/take?bookid=${book.id}&userid=${employee.mail}">Take</a></th>
+        <#else>
+        <th scope="col">You can't take more than 2 books</th>
+        </#if>
+        </#if>
+    </tr>
     </#list>
-</tbody>
+    </tbody>
 </table>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
 </body>
 </html>

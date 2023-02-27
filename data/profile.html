@@ -6,33 +6,98 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'><link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-    <p>Email: ${employee.mail}</p>
-    <p>Имя: ${employee.employeeName}</p>
-    <p>Читает: <#if employee.currentBooks?? && (employee.currentBooks?size > 0)>
-        <#list employee.currentBooks as currentBook>
-        <#list books as book>
-        <#if currentBook == book.id>
-        ${currentBook?counter}. ${book.name}
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/" class="nav-link px-2 link-secondary">Main</a></li>
+                <li><a href="/profile" class="nav-link px-2 link-dark">Profile</a></li>
+                <li><a href="/books" class="nav-link px-2 link-dark">Books</a></li>
+                <li><a href="/employee" class="nav-link px-2 link-dark">Employee</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            <#if !login??>
+            <a href="/login"><button type="button" class="btn btn-success mt-2 px-2">Login</button></a>
+            <a href="/register"><button type="button" class="btn btn-success mt-2 px-2">Sign-up</button></a>
+            <#else>
+            <a href="/logout"><button type="button" class="btn btn-outline-primary me-2">Logout</button></a>
+        </#if>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<p>E-mail: ${employee.mail}</p>
+<p>Имя сотрудника: ${employee.employeeName}</p>
+<#if employee.currentBooks?? && (employee.currentBooks?size > 0)>
+<h3>Текущие книги:</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Author</th>
+        <th scope="col">Year</th>
+        <th scope="col">Genre</th>
+        <th scope="col">Take or give</th>
+    </tr>
+    </thead>
+    <tbody>
+    <#list employee.currentBooks as currBook>
+    <#list books as book>
+    <#if currBook == book.id>
+    <tr>
+        <th scope="row">${book?counter}</th>
+        <td>${book.id}</td>
+        <td>${book.name}</td>
+        <td>${book.author}</td>
+        <td>${book.year}</td>
+        <td>${book.genre}</td>
+        <td><a href="/return?bookid=${book.id}&userid=${employee.mail}">Give back</a></td>
+    </tr>
     </#if>
 </#list>
 </#list>
-<#else>
-не читает
+
+</tbody>
+</table>
 </#if>
-</p>
-<p>Прочел и вернул: <#if employee.issuedBooks?? && (employee.issuedBooks?size > 0)>
+<#if employee.issuedBooks?? && (employee.issuedBooks?size > 0)>
+<h3>Список книг, которые брал раньше:</h3>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Author</th>
+        <th scope="col">Year</th>
+        <th scope="col">Genre</th>
+    </tr>
+    </thead>
+    <tbody>
     <#list employee.issuedBooks as issuedBook>
     <#list books as book>
     <#if issuedBook == book.id>
-    ${issuedBook?counter}. ${book.name}
-</#if>
+    <tr>
+        <th scope="row">${book?counter}</th>
+        <td>${book.id}</td>
+        <td>${book.name}</td>
+        <td>${book.author}</td>
+        <td>${book.year}</td>
+        <td>${book.genre}</td>
+    </tr>
+    </#if>
 </#list>
 </#list>
-<#else>
-пока ничего не отдал
-</#if></p>
 
+</tbody>
+</table>
+</#if>
 </body>
 </html>

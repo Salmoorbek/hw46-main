@@ -20,9 +20,6 @@ public class BookModel {
     public ArrayList<Book> getBooks() {
         return books;
     }
-    public Book getBook() {
-        return books.get(2);
-    }
 
     public static Book[] readBooks(){
         Path path = Paths.get("./books.json");
@@ -34,5 +31,17 @@ public class BookModel {
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.fromJson(json, Book[].class);
+    }
+    public static void writeBooks(ArrayList<Book> books){
+        Path path = Paths.get("./books.json");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Book[] result = books.stream().toArray(Book[]::new);
+        String json = gson.toJson(result);
+        try{
+            byte[] arr = json.getBytes();
+            Files.write(path, arr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
